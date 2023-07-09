@@ -3,9 +3,9 @@ const int buzzerPin = 9;
 
 // Star Wars müziği notaları
 int starWarsMelody[] = {
-  NOTE_A4, NOTE_A4, NOTE_A4, NOTE_F4, NOTE_C5, NOTE_A4, NOTE_F4, NOTE_C5,
-  NOTE_A4, NOTE_E5, NOTE_E5, NOTE_D5, NOTE_C5, NOTE_B4, NOTE_B4, NOTE_A4,
-  NOTE_F4, NOTE_C5, NOTE_A4, NOTE_F4, NOTE_C5, NOTE_A4
+  440, 440, 440, 349, 523, 440, 349, 523,
+  440, 659, 659, 587, 523, 494, 494, 440,
+  349, 523, 440, 349, 523, 440
 };
 
 // Star Wars müziği zamanlamaları
