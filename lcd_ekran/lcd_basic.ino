@@ -17,6 +17,10 @@ void setup() {
   
   // Yazıyı ekrana yazdır
   lcd.print("Merhaba!");
+  
+    // İkinci satıra geç
+  lcd.setCursor(0, 1);
+  lcd.print("Dunya!");
 }
 
 void loop() {
