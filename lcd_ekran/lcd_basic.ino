@@ -25,6 +25,8 @@ void loop() {
 
 
 /*
+____Bağlantı şeması_____
+
 LCD Ekran:
   - VSS --> Arduino GND
   - VDD --> Arduino 5V
