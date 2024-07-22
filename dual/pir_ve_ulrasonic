@@ -1,0 +1,95 @@
+// Ultrasonik sensörün bağlı olduğu pinler
+const int trigPin = 2; // Tetikleme pini
+const int echoPin = 3; // Yanıt pini
+
+// Buzzer ve LED'in bağlı olduğu pinler
+const int buzzerPin = 9;
+const int ultrasonicLedPin = 10; // Ultrasonik sensör için LED pin
+
+// PIR sensörünün bağlı olduğu pinler
+const int pirPin = 5; // PIR sensörünün sinyal pini
+const int pirLedPin = 11; // PIR için LED pin
+
+// Park mesafesi
+const int parkDistance = 10; // cm
+
+void setup() {
+  pinMode(trigPin, OUTPUT); // Tetikleme pini çıkış olarak ayarla
+  pinMode(echoPin, INPUT); // Yanıt pini giriş olarak ayarla
+  pinMode(buzzerPin, OUTPUT); // Buzzer pinini çıkış olarak ayarla
+  pinMode(ultrasonicLedPin, OUTPUT); // Ultrasonik sensör LED pinini çıkış olarak ayarla
+  pinMode(pirPin, INPUT); // PIR sensörünün pinini giriş olarak ayarla
+  pinMode(pirLedPin, OUTPUT); // PIR LED pinini çıkış olarak ayarla
+  Serial.begin(9600); // Seri iletişimi başlat
+}
+
+void loop() {
+  // Ultrasonik sensör mesafe ölçümü
+  long duration, distance;
+  
+  // Ultrasonik sensörden mesafeyi ölç
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+  
+  duration = pulseIn(echoPin, HIGH);
+  
+  // Mesafeyi hesapla
+  distance = (duration / 2) / 29.1;
+  
+  // Mesafeyi seri monitöre yazdır
+  Serial.print("Mesafe: ");
+  Serial.println(distance);
+  
+  // Mesafeye göre LED parlaklığını ayarla
+  analogWrite(ultrasonicLedPin, map(distance, 0, 100, 0, 255));
+  
+  // Park mesafesini kontrol et ve uyarı ver
+  if (distance <= parkDistance) {
+    int frequency = map(distance, 0, parkDistance, 2000, 5000); // Mesafeye göre frekansı hesapla
+    tone(buzzerPin, frequency); // Buzzer'ı çal
+  } else {
+    noTone(buzzerPin); // Buzzer'ı durdur
+  }
+
+  // PIR sensörü hareket algılama
+  int pirState = digitalRead(pirPin);  // PIR sensöründen okunan değeri al
+  
+  if (pirState == HIGH) {   // Eğer PIR sensörü hareket algılarsa
+    digitalWrite(pirLedPin, HIGH);  // LED'i yak
+    delay(1000);  // 1 saniye bekle
+  } else {
+    digitalWrite(pirLedPin, LOW);   // Hareket algılanmadığında LED'i söndür
+  }
+
+  delay(200); // Ölçüm aralığı için bekle
+}
+
+/*
+_____Bağlantı şeması_____
+
+Ultrasonik Sensör:
+  - VCC --> Arduino 5V
+  - GND --> Arduino GND
+  - Trig --> Arduino D2
+  - Echo --> Arduino D3
+
+Buzzer:
+  - Uzun bacak (Anot) --> Arduino D9
+  - Kısa bacak (Katot) --> Arduino GND
+
+LED (Ultrasonik sensör için):
+  - Anot (uzun bacak) --> Arduino D10
+  - Katot (kısa bacak) --> Arduino GND
+
+PIR Sensör:
+  - VCC --> Arduino 5V
+  - GND --> Arduino GND
+  - OUT --> Arduino D5
+
+LED (PIR sensör için):
+  - Anot (uzun bacak) --> Arduino D11
+  - Katot (kısa bacak) --> Arduino GND
+*/
