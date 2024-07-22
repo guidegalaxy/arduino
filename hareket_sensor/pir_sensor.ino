@@ -17,3 +17,12 @@ void loop() {
     digitalWrite(ledPin, LOW);   // Hareket algılanmadığında LED'i söndür
   }
 }
+
+
+  // Bağlantı açıklamaları
+  // Arduino GND - PIR sensörü GND
+  // Arduino 5V  - PIR sensörü VCC
+  // Arduino 5V  - LED anotu (uzun bacak)
+  // Arduino GND - LED katodu (kısa bacak)
+  // Arduino pin 5 - PIR sensörü OUT
+  // Arduino pin 9 - LED
